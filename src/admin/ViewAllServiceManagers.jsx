@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 
 const ViewAllServiceManagers = () => {
@@ -11,7 +11,7 @@ const ViewAllServiceManagers = () => {
 	const VIEW_URL = `${import.meta.env.VITE_API_URL}/adminapi/viewallservicemanagers`
 	const DELETE_URL = `${import.meta.env.VITE_API_URL}/adminapi/deleteservicemanager`
 
-	const fetchManagers = async () => {
+	const fetchManagers = useCallback(async () => {
 		try {
 			setLoading(true)
 			const response = await axios.get(VIEW_URL)
@@ -22,11 +22,11 @@ const ViewAllServiceManagers = () => {
 		} finally {
 			setLoading(false)
 		}
-	}
+	}, [VIEW_URL])
 
 	useEffect(() => {
 		fetchManagers()
-	}, [])
+	}, [fetchManagers])
 
 	const handleDelete = async (id) => {
 		const confirmed = window.confirm('Delete this service manager?')
@@ -94,8 +94,9 @@ const ViewAllServiceManagers = () => {
 											type="button"
 											onClick={() => handleDelete(manager.id)}
 											className="admin-danger-btn"
+											disabled={deletingId === manager.id}
 										>
-											Delete
+											{deletingId === manager.id ? 'Deleting...' : 'Delete'}
 										</button>
 									</td>
 								</tr>

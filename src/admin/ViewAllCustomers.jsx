@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 
 const ViewAllCustomers = () => {
@@ -8,7 +8,7 @@ const ViewAllCustomers = () => {
 
 	const URL = `${import.meta.env.VITE_API_URL}/adminapi/viewallcustomers`
 
-	const fetchCustomers = async () => {
+	const fetchCustomers = useCallback(async () => {
 		try {
 			setLoading(true)
 			const response = await axios.get(URL)
@@ -19,11 +19,11 @@ const ViewAllCustomers = () => {
 		} finally {
 			setLoading(false)
 		}
-	}
+	}, [URL])
 
 	useEffect(() => {
 		fetchCustomers()
-	}, [])
+	}, [fetchCustomers])
 
 	return (
 		<section className="admin-section-card">
