@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import axios from '../api/axiosClient'
 
 const ViewAllServiceManagers = () => {
 	const [managers, setManagers] = useState([])
 	const [loading, setLoading] = useState(true)
-	const [deletingId, setDeletingId] = useState(null)
 	const [error, setError] = useState('')
 	const [message, setMessage] = useState('')
 
 	const VIEW_URL = `${import.meta.env.VITE_API_URL}/adminapi/viewallservicemanagers`
 	const DELETE_URL = `${import.meta.env.VITE_API_URL}/adminapi/deleteservicemanager`
 
-	const fetchManagers = useCallback(async () => {
+	const fetchManagers = async () => {
 		try {
 			setLoading(true)
 			const response = await axios.get(VIEW_URL)
@@ -22,39 +21,44 @@ const ViewAllServiceManagers = () => {
 		} finally {
 			setLoading(false)
 		}
-	}, [VIEW_URL])
+	}
 
 	useEffect(() => {
 		fetchManagers()
-	}, [fetchManagers])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
-	const handleDelete = async (id) => {
-		const confirmed = window.confirm('Delete this service manager?')
+	const handleDelete = async (id) => 
+	{
+		const confirmed = window.confirm('Do you want to Delete this service manager?')
 		if (!confirmed) return
 
-		try {
-			setDeletingId(id)
+		try 
+		{
 			const response = await axios.delete(`${DELETE_URL}/${id}`)
 			setMessage(response.data)
 			setError('')
 			fetchManagers()
-		} catch (err) {
-			if (err.response?.status === 404) {
+		} 
+		catch (err) 
+		{
+			if (err.response?.status === 404) 
+			{
 				setError('Service manager not found')
-			} else {
-				setError('Failed to delete service manager')
+			} 
+			else 
+			{
+				setError(err.response.data)
 			}
 			setMessage('')
-		} finally {
-			setDeletingId(null)
-		}
+		} 
 	}
 
 	return (
 		<section className="admin-section-card admin-section-card-wide">
 			<h2 style={{ textAlign: 'center' }}>View All Service Managers</h2>
 			{message && <p className="admin-success" style={{ textAlign: 'center' }}>{message}</p>}
-			{error && <p className="admin-error" style={{ textAlign: 'center' }}>{error}</p>}
+			{error && <p className="admin-error" style={{ textAlign: 'center',color:"red" }}>{error}</p>}
 			{loading && <p className="admin-loading">Loading service managers...</p>}
 			{!loading && managers.length === 0 && <p style={{ textAlign: 'center' }}>No service managers found.</p>}
 
@@ -94,9 +98,8 @@ const ViewAllServiceManagers = () => {
 											type="button"
 											onClick={() => handleDelete(manager.id)}
 											className="admin-danger-btn"
-											disabled={deletingId === manager.id}
 										>
-											{deletingId === manager.id ? 'Deleting...' : 'Delete'}
+											Delete
 										</button>
 									</td>
 								</tr>
