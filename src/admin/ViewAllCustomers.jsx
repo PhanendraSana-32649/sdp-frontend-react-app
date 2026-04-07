@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import axios from '../api/axiosClient'
 
 const ViewAllCustomers = () => {
@@ -10,7 +10,7 @@ const ViewAllCustomers = () => {
 	const VIEW_URL = `${import.meta.env.VITE_API_URL}/adminapi/viewallcustomers`
 	const DELETE_URL = `${import.meta.env.VITE_API_URL}/adminapi/deletecustomer`
 
-	const fetchCustomers = async () => {
+	const fetchCustomers = useCallback(async () => {
 		try {
 			setLoading(true)
 			const response = await axios.get(VIEW_URL)
@@ -21,11 +21,11 @@ const ViewAllCustomers = () => {
 		} finally {
 			setLoading(false)
 		}
-	}
+	}, [VIEW_URL])
 
 	useEffect(() => {
 		fetchCustomers()
-	}, [])
+	}, [fetchCustomers])
 
 	const handleDelete = async (id) => {
 		const confirmed = window.confirm('Delete this customer?')

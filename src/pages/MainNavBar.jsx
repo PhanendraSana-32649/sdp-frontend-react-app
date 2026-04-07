@@ -9,6 +9,7 @@ import AdminLogin from './AdminLogin'
 import Login from './Login'
 import Contact from './Contact'
 import PageNotFound from './PageNotFound'
+import MUIDemo from './MUIDemo'
 
 const MainNavBar = () => {
   return (
@@ -29,7 +30,9 @@ const MainNavBar = () => {
         <Route path="/customerregistration" element={<CustomerRegistration />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login/>} />
+        <Route path="/MUIDemo" element={<MUIDemo />} />
         <Route path="*" element={<PageNotFound />} />
+
       </Routes>
     </>
   )
