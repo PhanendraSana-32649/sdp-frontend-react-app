@@ -3,6 +3,8 @@ import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import './servicemanager.css'
 import AddService from './AddService'
 import ServiceManagerHome from './ServiceManagerHome'
+import ViewBookingsByManager from './ViewBookingsByManager'
+import ViewServicesByManager from './ViewServicesByManager'
 import PageNotFound from '../pages/PageNotFound'
 import { useAuth } from '../context/AuthContext'
 
@@ -22,6 +24,7 @@ const ServiceManagerNavBar = () => {
         <ul className="sm-nav-links">
           <li><Link to="/servicemanager/home">Home</Link></li>
           <li><Link to="/servicemanager/addservice">Add Service</Link></li>
+          <li><Link to="/servicemanager/viewbookings">View Bookings</Link></li>
           <li><button type="button" onClick={handleLogout}>Logout</button></li>
         </ul>
       </nav>
@@ -31,6 +34,7 @@ const ServiceManagerNavBar = () => {
           <Route path="/" element={<Navigate to="/servicemanager/home" replace />} />
           <Route path="/servicemanager/home" element={<ServiceManagerHome />} />
           <Route path="/servicemanager/addservice" element={<AddService />} />
+          <Route path="/servicemanager/viewbookings" element={<ViewBookingsByManager />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </main>
